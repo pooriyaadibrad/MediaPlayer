@@ -1,3 +1,4 @@
+"""
 import tkinter as tk
 from tkinter import filedialog
 import os
@@ -17,3 +18,15 @@ def open_folder_and_get_files():
 
 
 open_folder_and_get_files()
+"""
+import os
+
+def get_file_location(file_name):
+    if os.path.exists(file_name):
+        return os.path.abspath(file_name)
+    else:
+        return "فایل مورد نظر یافت نشد."
+
+file_name = "Sefareshi - Yas.mp3"  # نام فایل مورد نظر
+file_location = get_file_location(file_name)
+print(file_location)

@@ -7,8 +7,11 @@ import pygame
 class App(Frame):
     def __init__(self,master=None):
         super().__init__(master)
+        pygame.init()
         self.master=master
         self.CreateWiget()
+        self.songList=[]
+        self.SelectFolder=""
     def CreateWiget(self):
         #playbtn
         self.ImgPlay=PhotoImage(file="image/play.png")
@@ -31,24 +34,30 @@ class App(Frame):
         self.Table=ttk.Treeview(win,columns=("c1"),show="headings")
         self.Table.column("c1",width=250,anchor="center")
         self.Table.heading("c1",text="Music")
+
         self.Table.pack(side="right",fill=BOTH)
+
+
     def SelectFolder(self,e):
-        Files=filedialog.askdirectory()
-        FileInFolder=os.listdir(Files)
+        self.SelectFolder=filedialog.askdirectory()
+        FileInFolder=os.listdir(self.SelectFolder)
         for File in FileInFolder:
             if File.endswith(".mp3"):
+                self.songList.append(os.path.join(self.SelectFolder,File))
                 self.Table.insert('',"end",values=[File])
-    def load_songs(self, folder_path):
-        for root, dirs, files in os.walk(folder_path):
-            for file in files:
-                if file.endswith(".mp3"):
-                    self.song_list.append(os.path.join(root, file))
 
     def ClickPlay(self,e):
-        pass
+        select = self.Table.selection()
+        if select != ():
+            data = self.Table.item(select)["values"][0]
+            data=os.path.join(self.SelectFolder,data)
+            for song in self.songList:
+                if song==data:
+                    i=self.songList.index(song)
+                    self.play_song(i)
     def play_song(self,song_index):
-        pygame.mixer.music.load(self.song_list[song_index])
-        pygame.mixer.music.play()
+            pygame.mixer.music.load(self.songList[song_index])
+            pygame.mixer.music.play()
 
 if __name__=="__main__":
     win=Tk()
