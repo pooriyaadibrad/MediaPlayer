@@ -1,6 +1,7 @@
 import os
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 import pygame
 
 class App(Frame):
@@ -13,6 +14,7 @@ class App(Frame):
         self.ImgPlay=PhotoImage(file="image/play.png")
         self.ImgNext=PhotoImage(file="image/Next.png")
         self.ImgUndo=PhotoImage(file="image/Undo.png")
+        self.ImgAddMusic=PhotoImage(file="image/AddMusic.png")
         self.PlaySong=Button(self.master,image=self.ImgPlay)
         self.PlaySong.bind("<Button-1>",self.ClickPlay)
         self.PlaySong.place(x=150,y=200)
@@ -22,11 +24,20 @@ class App(Frame):
         self.NextSong = Button(self.master, image=self.ImgNext)
         self.NextSong.bind("<Button-1>", self.play_song)
         self.NextSong.place(x=220, y=210)
+        self.SelectFolderBtn = Button(self.master, image=self.ImgAddMusic)
+        self.SelectFolderBtn.bind("<Button-1>", self.SelectFolder)
+        self.SelectFolderBtn.place(x=300, y=350)
         #table
         self.Table=ttk.Treeview(win,columns=("c1"),show="headings")
-        self.Table.column("c1",width=200)
+        self.Table.column("c1",width=250,anchor="center")
+        self.Table.heading("c1",text="Music")
         self.Table.pack(side="right",fill=BOTH)
-
+    def SelectFolder(self,e):
+        Files=filedialog.askdirectory()
+        FileInFolder=os.listdir(Files)
+        for File in FileInFolder:
+            if File.endswith(".mp3"):
+                self.Table.insert('',"end",values=[File])
     def load_songs(self, folder_path):
         for root, dirs, files in os.walk(folder_path):
             for file in files:
