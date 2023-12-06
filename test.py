@@ -1,32 +1,19 @@
-"""
 import tkinter as tk
-from tkinter import filedialog
-import os
+from tkinter import ttk
 
+def select_first_row():
+    tree.selection_set("item1")  # سلکت کردن اولین ردیف
 
-def open_folder_and_get_files():
-    root = tk.Tk()
-    root.withdraw()  # مخفی کردن پنجره اصلی
-    folder_path = filedialog.askdirectory()  # باز کردن فایل بروزر و انتخاب پوشه
-    print("مسیر پوشه انتخاب شده:", folder_path)
+root = tk.Tk()
 
-    # خواندن تمام فایل‌های موجود در این پوشه
-    files_in_folder = os.listdir(folder_path)
-    print("فایل‌های موجود در این پوشه:")
-    for file in files_in_folder:
-        print(os.path.join(folder_path, file))
+tree = ttk.Treeview(root)
+tree.pack()
 
+tree.insert("", "0", "item1", text="مورد 1")
+tree.insert("", "1", "item2", text="مورد 2")
+tree.insert("", "end", "item3", text="مورد 3")
 
-open_folder_and_get_files()
-"""
-import os
+button = tk.Button(root, text="اولین ردیف", command=select_first_row)
+button.pack()
 
-def get_file_location(file_name):
-    if os.path.exists(file_name):
-        return os.path.abspath(file_name)
-    else:
-        return "فایل مورد نظر یافت نشد."
-
-file_name = "Sefareshi - Yas.mp3"  # نام فایل مورد نظر
-file_location = get_file_location(file_name)
-print(file_location)
+root.mainloop()
